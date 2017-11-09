@@ -1,4 +1,4 @@
-package com.dev4tomorrow.edwinkato.bucketlist.model;
+package com.dev4tomorrow.edwinkato.bucketlist.data.model;
 
 /**
  * Created by edwinkato on 10/18/17.

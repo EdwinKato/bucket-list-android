@@ -1,6 +1,6 @@
 package com.dev4tomorrow.edwinkato.bucketlist.ui.bucketLists;
 
-import com.dev4tomorrow.edwinkato.bucketlist.model.BucketList;
+import com.dev4tomorrow.edwinkato.bucketlist.data.model.BucketList;
 
 import java.util.List;
 
