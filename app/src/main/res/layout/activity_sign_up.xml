@@ -42,23 +42,6 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/username"
-                    android:layout_width="match_parent"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_username"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <AutoCompleteTextView
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:textColor="@color/white"
@@ -108,6 +91,17 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/error_message"
+                android:visibility="gone"
+                android:textColor="@color/red"
+                android:paddingTop="10dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/register_button"

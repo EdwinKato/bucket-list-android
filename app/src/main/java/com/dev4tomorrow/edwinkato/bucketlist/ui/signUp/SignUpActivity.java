@@ -11,6 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dev4tomorrow.edwinkato.bucketlist.R;
@@ -20,11 +24,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class SignUpActivity extends AppCompatActivity {
 
-    private View mSignUpFormView;
-    private View mProgressView;
+    public final String TAG = "SIGN_UP_ACTIVITY";
     private FirebaseAuth mAuth;
+
+    @BindView(R.id.sign_up_form) View mSignUpFormView;
+    @BindView(R.id.sign_up_progress) View mProgressView;
+    @BindView(R.id.register_button) Button mRegisterButton;
+    @BindView(R.id.password) EditText mPasswordField;
+    @BindView(R.id.confirm_password) EditText mConfirmPasswordField;
+    @BindView(R.id.email) AutoCompleteTextView mEmailField;
+    @BindView(R.id.error_message) TextView mErrorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +48,30 @@ public class SignUpActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ButterKnife.bind(this);
+
         // Initialise the FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
 
-        mSignUpFormView = findViewById(R.id.sign_up_form);
-        mProgressView = findViewById(R.id.sign_up_progress);
+    }
 
+    @OnClick(R.id.register_button) void submit() {
+        if (this.isEmpty(mEmailField) || this.isEmpty(mPasswordField) || this.isEmpty(mConfirmPasswordField)) {
+            mErrorMessage.setVisibility(View.VISIBLE);
+            mErrorMessage.setText(R.string.missing_fields);
+            return;
+        }
+        if (this.doPasswordsMatch(mPasswordField, mConfirmPasswordField)) {
+            this.createAccount(mEmailField.getText().toString().trim(), mPasswordField.getText().toString().trim());
+            mErrorMessage.setVisibility(View.GONE);
+        } else {
+            mErrorMessage.setVisibility(View.VISIBLE);
+            mErrorMessage.setText(R.string.un_matching_passwords);
+        }
     }
 
     private void createAccount(String email, String password) {
-        Log.d("CreateAccount", "createAccount:" + email);
-
         showProgress(true);
-
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -53,23 +79,27 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("AccountCreate", "createUserWithEmail:success");
+                            Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Log.i("Account creation", "User account successfully created");
+                            Log.i(TAG, "User account successfully created");
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("AccountCreate", "createUserWithEmail:failure", task.getException());
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            Log.i("Account creation", "User account not created");
+                            Log.i(TAG, "User account not created");
                         }
-
-                        // [START_EXCLUDE]
                         showProgress(false);
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END create_user_with_email]
+    }
+
+    private boolean isEmpty(EditText editText) {
+        return editText.getText().toString().trim().length() == 0;
+    }
+
+    private boolean doPasswordsMatch(EditText password, EditText confirmPassword) {
+        return password.getText().toString().trim().equals(confirmPassword.getText().toString().trim());
     }
 
     /**
