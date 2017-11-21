@@ -1,6 +1,9 @@
 package com.edwinkato.bucketlist.app;
 
 import android.app.Application;
+import android.content.Context;
+
+import com.google.firebase.FirebaseApp;
 
 /**
  * Created by edwinkato on 11/20/17.
@@ -8,10 +11,19 @@ import android.app.Application;
 
 public class BucketListApplication extends Application {
 
+    private static BucketListApplication mInstance;
+
     @Override
     public void onCreate() {
         super.onCreate();
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        mInstance = this;
+        try {
+            FirebaseApp.initializeApp(this);
+        } catch (Exception e) {
+        }
+    }
 
+    public static Context getInstance() {
+        return mInstance;
     }
 }
