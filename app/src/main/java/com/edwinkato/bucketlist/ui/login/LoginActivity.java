@@ -216,6 +216,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
+                        .setTheme(R.style.LoginTheme)
+                        .setLogo(R.drawable.logo)
                         .build(),
                 RC_SIGN_IN);
 
