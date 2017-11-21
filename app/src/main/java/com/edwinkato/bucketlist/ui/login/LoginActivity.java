@@ -1,4 +1,4 @@
-package com.dev4tomorrow.edwinkato.bucketlist.ui.login;
+package com.edwinkato.bucketlist.ui.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -34,8 +34,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dev4tomorrow.edwinkato.bucketlist.R;
-import com.dev4tomorrow.edwinkato.bucketlist.ui.signUp.SignUpActivity;
+import com.edwinkato.bucketlist.R;
+import com.edwinkato.bucketlist.ui.bucketLists.BucketListsActivity;
+import com.edwinkato.bucketlist.ui.signUp.SignUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -50,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final String TAG = "LOGIN_ACTIVITY";
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -125,14 +127,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         updateUI(currentUser);
     }
 
+    public void redirectToHome() {
+//        Intent intent = new Intent(LoginActivity.this, BucketListsActivity.class);
+        startActivity(new Intent(LoginActivity.this, BucketListsActivity.class));
+    }
+
     private void updateUI(FirebaseUser user) {
         showProgress(false);
         if (user != null) {
             // User is signed in
-            Log.i("EmailSignIn","User is signed in");
+            Log.i(TAG,"User is signed in");
+            this.redirectToHome();
         } else {
             // User is not signed in
-            Log.i("EmailSignIn"," User is not signed in");
+            Log.i(TAG," User is not signed in");
         }
     }
 

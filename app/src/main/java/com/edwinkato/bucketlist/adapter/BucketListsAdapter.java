@@ -1,4 +1,4 @@
-package com.dev4tomorrow.edwinkato.bucketlist.adapter;
+package com.edwinkato.bucketlist.adapter;
 
 /**
  * Created by edwinkato on 10/18/17.
@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dev4tomorrow.edwinkato.bucketlist.R;
-import com.dev4tomorrow.edwinkato.bucketlist.data.model.BucketList;
+import com.edwinkato.bucketlist.R;
+import com.edwinkato.bucketlist.data.model.BucketList;
 
 import java.util.List;
 

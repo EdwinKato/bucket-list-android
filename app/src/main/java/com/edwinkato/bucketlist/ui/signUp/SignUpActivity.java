@@ -1,8 +1,9 @@
-package com.dev4tomorrow.edwinkato.bucketlist.ui.signUp;
+package com.edwinkato.bucketlist.ui.signUp;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dev4tomorrow.edwinkato.bucketlist.R;
+import com.edwinkato.bucketlist.R;
+import com.edwinkato.bucketlist.ui.bucketLists.BucketListsActivity;
+import com.edwinkato.bucketlist.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,7 +33,7 @@ import butterknife.OnClick;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    public final String TAG = "SIGN_UP_ACTIVITY";
+    public static final String TAG = "SIGN_UP_ACTIVITY";
     private FirebaseAuth mAuth;
 
     @BindView(R.id.sign_up_form) View mSignUpFormView;
@@ -70,6 +73,11 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    public void redirectToHome() {
+        Intent intent = new Intent(SignUpActivity.this, BucketListsActivity.class);
+        startActivity(intent);
+    }
+
     private void createAccount(String email, String password) {
         showProgress(true);
         // [START create_user_with_email]
@@ -79,9 +87,9 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Log.i(TAG, "User account successfully created");
+                            redirectToHome();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());

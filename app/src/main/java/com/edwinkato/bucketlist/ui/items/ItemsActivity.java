@@ -1,4 +1,4 @@
-package com.dev4tomorrow.edwinkato.bucketlist.ui.items;
+package com.edwinkato.bucketlist.ui.items;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.dev4tomorrow.edwinkato.bucketlist.R;
+import com.edwinkato.bucketlist.R;
 
 public class ItemsActivity extends AppCompatActivity {
 

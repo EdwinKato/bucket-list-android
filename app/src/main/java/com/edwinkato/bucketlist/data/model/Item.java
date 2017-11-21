@@ -1,15 +1,15 @@
-package com.dev4tomorrow.edwinkato.bucketlist.data.model;
+package com.edwinkato.bucketlist.data.model;
 
 /**
  * Created by edwinkato on 10/18/17.
  */
 
-public class BucketList {
+public class Item {
     int id;
     String title;
     String description;
 
-    public BucketList(int id, String title, String description) {
+    public Item(int id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
