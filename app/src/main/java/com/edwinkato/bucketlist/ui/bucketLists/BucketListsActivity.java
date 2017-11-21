@@ -2,6 +2,7 @@ package com.edwinkato.bucketlist.ui.bucketLists;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -16,15 +17,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.edwinkato.bucketlist.R;
-import com.edwinkato.bucketlist.ui.login.LoginActivity;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ResultCodes;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BucketListsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FirebaseAuth mAuth;
     public static final String TAG = "BUCKET_LISTS_ACTIVITY";
+
+    private static final int RC_SIGN_IN = 123;
+    private FirebaseUser user;
+
+    // Choose authentication providers
+    List<AuthUI.IdpConfig> providers = Arrays.asList(
+            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+            new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +48,6 @@ public class BucketListsActivity extends AppCompatActivity
         setContentView(R.layout.activity_bucket_lists);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Initialise the FirebaseAuth instance
-        mAuth = FirebaseAuth.getInstance();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -58,15 +71,34 @@ public class BucketListsActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
             this.redirectToLogin();
         }
     }
 
-    public void redirectToLogin() {
-//        Intent intent = new Intent(BucketListsActivity.this, LoginActivity.class);
-//        startActivity(intent);
+    private void redirectToLogin() {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .setTheme(R.style.LoginTheme)
+                        .setLogo(R.drawable.logo)
+                        .build(),
+                RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == ResultCodes.OK) {
+                user = FirebaseAuth.getInstance().getCurrentUser();
+            }
+        }
     }
 
     @Override
@@ -97,7 +129,13 @@ public class BucketListsActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_logout) {
-            mAuth.signOut();
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // ...
+                        }
+                    });
             this.redirectToLogin();
             return true;
         }
