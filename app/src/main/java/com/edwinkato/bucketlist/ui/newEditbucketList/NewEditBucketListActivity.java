@@ -3,6 +3,8 @@ package com.edwinkato.bucketlist.ui.newEditbucketList;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.edwinkato.bucketlist.R;
+
 public class NewEditBucketListActivity extends AppCompatActivity {
 
     @Override

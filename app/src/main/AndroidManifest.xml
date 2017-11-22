@@ -35,7 +35,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.LoginActivity"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:theme="@style/LoginTheme" />
+        <activity android:name=".ui.newEditbucketList.NewEditBucketListActivity"></activity>
     </application>
 
 </manifest>
