@@ -3,7 +3,9 @@ package com.edwinkato.bucketlist.data.model;
 /**
  * Created by edwinkato on 10/18/17.
  */
+import com.google.firebase.database.IgnoreExtraProperties;
 
+@IgnoreExtraProperties
 public class Item {
     private int id;
     private String name;

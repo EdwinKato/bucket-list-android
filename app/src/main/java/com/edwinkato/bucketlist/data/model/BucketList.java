@@ -4,24 +4,27 @@ package com.edwinkato.bucketlist.data.model;
  * Created by edwinkato on 10/18/17.
  */
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class BucketList {
-    private int mUid;
+    private String mUid;
     private String mName;
     private String mDescription;
 
     public BucketList() {}  // Needed for Firebase
 
-    public BucketList(int id, String name, String description) {
-        this.mUid = id;
+    public BucketList(String uid, String name, String description) {
+        this.mUid = uid;
         this.mName = name;
         this.mDescription = description;
     }
 
-    public int getUid() {
+    public String getUid() {
         return mUid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.mUid = uid;
     }
 
