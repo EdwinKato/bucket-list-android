@@ -46,7 +46,7 @@ public class BucketListsAdapter extends RecyclerView.Adapter<BucketListsAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         BucketList bucketList = bucketLists.get(position);
-        holder.title.setText(bucketList.getTitle());
+        holder.title.setText(bucketList.getName());
         holder.description.setText(bucketList.getDescription());
     }
 

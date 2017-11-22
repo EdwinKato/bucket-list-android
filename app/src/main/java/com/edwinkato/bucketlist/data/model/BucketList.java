@@ -5,37 +5,39 @@ package com.edwinkato.bucketlist.data.model;
  */
 
 public class BucketList {
-    int id;
-    String title;
-    String description;
+    private int mUid;
+    private String mName;
+    private String mDescription;
 
-    public BucketList(int id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
+    public BucketList() {}  // Needed for Firebase
+
+    public BucketList(int id, String name, String description) {
+        this.mUid = id;
+        this.mName = name;
+        this.mDescription = description;
     }
 
-    public int getId() {
-        return id;
+    public int getUid() {
+        return mUid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUid(int uid) {
+        this.mUid = uid;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return mName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.mName = name;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.mDescription = description;
     }
 }

@@ -5,13 +5,15 @@ package com.edwinkato.bucketlist.data.model;
  */
 
 public class Item {
-    int id;
-    String title;
-    String description;
+    private int id;
+    private String name;
+    private String description;
 
-    public Item(int id, String title, String description) {
+    public Item() {}  // Needed for Firebase
+
+    public Item(int id, String name, String description) {
         this.id = id;
-        this.title = title;
+        this.name = name;
         this.description = description;
     }
 
@@ -23,12 +25,12 @@ public class Item {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -38,4 +40,5 @@ public class Item {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }
