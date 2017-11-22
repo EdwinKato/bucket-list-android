@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main"
-    tools:context="com.dev4tomorrow.edwinkato.bucketlist.ui.bucketLists.BucketListsActivity">
+    tools:context="com.edwinkato.bucketlist.ui.bucketLists.BucketListsActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
