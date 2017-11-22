@@ -29,14 +29,17 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setTheme(R.style.LoginTheme)
-                        .setLogo(R.drawable.logo)
-                        .build(),
-                RC_SIGN_IN);
+        login();
+    }
+
+    private void login() {
+        Intent intent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .setTheme(R.style.LoginTheme)
+                .setLogo(R.drawable.logo)
+                .build();
+        startActivityForResult(intent, RC_SIGN_IN);
     }
 
     @Override
@@ -65,4 +68,5 @@ public class LoginActivity extends AppCompatActivity {
     private void redirectToHome() {
         startActivity(new Intent(LoginActivity.this, BucketListsActivity.class));
     }
+
 }

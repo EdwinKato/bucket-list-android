@@ -33,7 +33,9 @@
             android:name=".ui.profile.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.LoginActivity"></activity>
+        <activity
+            android:name=".ui.LoginActivity"
+            android:noHistory="true" />
     </application>
 
 </manifest>
