@@ -5,10 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edwinkato.bucketlist.R;
@@ -33,6 +36,8 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
     private DatabaseReference mDatabase;
     private Validator validator;
     protected boolean validated;
+    Boolean mIsEdit = false;
+    private String[] arraySpinner = new String[] { "Pending"};
 
     @BindView(R.id.action_cancel)
     ImageView actionCancel;
@@ -49,14 +54,17 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
     EditText textDescription;
 
     @NotEmpty
-    @BindView(R.id.status)
-    EditText textStatus;
+    @BindView(R.id.edit_bucket_list)
+    TextView activityTitle;
 
     @BindView(R.id.new_bucket_list_linear_layout)
     LinearLayout linearLayout;
 
     @BindView(R.id.action_save_and_close)
     Button saveAndClose;
+
+    @BindView(R.id.select_status)
+    Spinner selectStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +73,32 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
         ButterKnife.bind(this);
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                mIsEdit= false;
+            } else {
+                mIsEdit=true;
+//                isEdit= extras.getBoolean("IS_EDIT");
+            }
+        } else {
+//            isEdit= (Boolean) savedInstanceState.getSerializable("STRING_I_NEED");
+        }
+
+        if (mIsEdit) {
+            activityTitle.setText(R.string.edit_bucket_list);
+            this.arraySpinner = new String[] {
+                    "Pending", "Completed"
+            };
+            selectStatus.setEnabled(true);
+        } else {
+            selectStatus.setEnabled(false);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        selectStatus.setAdapter(adapter);
     }
 
     @OnClick(R.id.action_cancel)

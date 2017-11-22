@@ -125,4 +125,6 @@
     <string name="fb_login_protocol_scheme">fb1718062844894731</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="new_bucket_list">NEW BUCKET LIST</string>
+    <string name="edit_bucket_list">EDIT BUCKET LIST</string>
 </resources>
