@@ -1,10 +1,13 @@
 package com.edwinkato.bucketlist.ui.newEditbucketList;
 
 import android.net.Uri;
+import android.support.annotation.IntRange;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,8 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
+import com.beloo.widget.chipslayoutmanager.gravity.IChildGravityResolver;
+import com.beloo.widget.chipslayoutmanager.layouter.breaker.IRowBreaker;
 import com.edwinkato.bucketlist.R;
 import com.edwinkato.bucketlist.data.model.BucketList;
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -154,7 +161,8 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
 //        final ChipsInput chipsInput = (ChipsInput) dialog.findViewById(R.id.chips_input);
 
         Button addTag = (Button)dialog.findViewById(R.id.add_tag);
-        LinearLayout tagsDisplayLayout = (LinearLayout)dialog.findViewById(R.id.tags_display_linear_layout);
+        FlexboxLayout tagsDisplayLayout = (FlexboxLayout)dialog.findViewById(R.id.tags_display_linear_layout);
+
         populateExistingTags(tagsDisplayLayout);
         EditText tagText = (EditText)dialog.findViewById(R.id.tag_text);
 
@@ -251,7 +259,7 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
         }
     }
 
-    private void populateExistingTags(LinearLayout layout) {
+    private void populateExistingTags(FlexboxLayout layout) {
         for (int i = 0; i < 10; i++) {
 //            View view = layoutInflater.inflate(R.layout.scroll_view_item, linearLayout, false);
             final ChipView chip = new ChipView(this);
