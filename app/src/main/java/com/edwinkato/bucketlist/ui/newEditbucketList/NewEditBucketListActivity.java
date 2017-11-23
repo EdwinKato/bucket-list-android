@@ -1,9 +1,11 @@
 package com.edwinkato.bucketlist.ui.newEditbucketList;
 
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,7 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.pchmn.materialchips.ChipView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,6 +43,8 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
     protected boolean validated;
     Boolean mIsEdit = false;
     private String[] arraySpinner = new String[] { "Pending"};
+    LayoutInflater layoutInflater;
+    HashSet<String> selectedTags = new HashSet<>();
 
     @BindView(R.id.action_cancel)
     ImageView actionCancel;
@@ -66,6 +73,9 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
     @BindView(R.id.select_status)
     Spinner selectStatus;
 
+    @BindView(R.id.chips_layout)
+    LinearLayout chipsLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +83,8 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
         ButterKnife.bind(this);
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+        layoutInflater=(LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -99,6 +111,7 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
         selectStatus.setAdapter(adapter);
+        setUpHorizontalScrollView();
     }
 
     @OnClick(R.id.action_cancel)
@@ -114,6 +127,9 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
     @OnClick(R.id.action_save_and_close)
     public void saveAndClose(){
         save();
+        if (!validated) {
+            return;
+        }
         finish();
     }
 
@@ -166,6 +182,39 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
             } else {
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    private void setUpHorizontalScrollView() {
+        for (int i = 0; i < 5; i++) {
+            View view = layoutInflater.inflate(R.layout.scroll_view_item, linearLayout, false);
+            final ChipView chip = (ChipView) view.findViewById(R.id.chip);
+            chip.setLabel("Chipo");
+            chip.setOnDeleteClicked(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar snackbar = Snackbar
+                            .make(linearLayout, chip.getLabel() + ": delete clicked", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            });
+
+            chip.setOnChipClicked(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (selectedTags.contains(chip.getLabel())) {
+                        selectedTags.remove(chip.getLabel());
+                        chip.setHasAvatarIcon(false);
+//                        chip.setDeletable(true);
+                        return;
+                    }
+                    selectedTags.add(chip.getLabel());
+                    chip.setAvatarIcon(getResources().getDrawable(R.mipmap.ic_checkmark));
+//                    chip.setDeletable(false);
+                }
+            });
+            chipsLayout.addView(view);
+
         }
     }
 }

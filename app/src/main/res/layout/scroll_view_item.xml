@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrol_item_Layout"
+    android:orientation="horizontal">
+
+    <com.pchmn.materialchips.ChipView
+        android:id="@+id/chip"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        app:label="Chip 5"
+        app:labelColor="@color/white"
+        app:backgroundColor="@color/colorPrimary"
+        app:deleteIconColor="@color/white"/>
+
+</LinearLayout>
