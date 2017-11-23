@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        app:label="Chip 5"
         app:labelColor="@color/white"
         app:backgroundColor="@color/colorPrimary"
         app:deleteIconColor="@color/white"/>

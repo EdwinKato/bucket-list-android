@@ -1,13 +1,9 @@
 package com.edwinkato.bucketlist.ui.newEditbucketList;
 
-import android.net.Uri;
-import android.support.annotation.IntRange;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,9 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
-import com.beloo.widget.chipslayoutmanager.gravity.IChildGravityResolver;
-import com.beloo.widget.chipslayoutmanager.layouter.breaker.IRowBreaker;
 import com.edwinkato.bucketlist.R;
 import com.edwinkato.bucketlist.data.model.BucketList;
 import com.google.android.flexbox.FlexboxLayout;
@@ -34,18 +27,14 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.pchmn.materialchips.ChipView;
-import com.pchmn.materialchips.ChipsInput;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.pchmn.materialchips.R2.id.info;
-import static com.pchmn.materialchips.R2.id.label;
 
 public class NewEditBucketListActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -155,21 +144,27 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
     public void addTag(){
         dialog = new MaterialDialog.Builder(this)
                 .customView(R.layout.dialog_tags_input, true)
-//                .positiveText("Done")
+                .positiveText("Done")
                 .show();
 
-//        final ChipsInput chipsInput = (ChipsInput) dialog.findViewById(R.id.chips_input);
-
         Button addTag = (Button)dialog.findViewById(R.id.add_tag);
-        FlexboxLayout tagsDisplayLayout = (FlexboxLayout)dialog.findViewById(R.id.tags_display_linear_layout);
+        final FlexboxLayout tagsDisplayLayout = (FlexboxLayout)dialog.findViewById(R.id.tags_display_linear_layout);
 
         populateExistingTags(tagsDisplayLayout);
-        EditText tagText = (EditText)dialog.findViewById(R.id.tag_text);
+        final EditText tagText = (EditText)dialog.findViewById(R.id.tag_text);
 
         addTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                chipsInput.addChip("sample", "info");
+                String text = tagText.getText().toString().trim();
+                if (!text.equals("")) {
+                    availableTags.add(text);
+                    ChipView chip = createChip(text);
+                    ChipView inActivityChip = createChip(text);
+                    tagsDisplayLayout.addView(chip);
+                    chipsLayout.addView(inActivityChip);
+                    tagText.setText("");
+                }
             }
         });
     }
@@ -227,10 +222,11 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
     }
 
     private void setUpHorizontalScrollView() {
-        for (int i = 0; i < 5; i++) {
+        Iterator iterator = availableTags.iterator();
+        while (iterator.hasNext()){
             View view = layoutInflater.inflate(R.layout.scroll_view_item, linearLayout, false);
             final ChipView chip = (ChipView) view.findViewById(R.id.chip);
-            chip.setLabel("Chipo");
+            chip.setLabel(iterator.next().toString());
             chip.setOnDeleteClicked(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -246,27 +242,39 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
                     if (selectedTags.contains(chip.getLabel())) {
                         selectedTags.remove(chip.getLabel());
                         chip.setHasAvatarIcon(false);
-//                        chip.setDeletable(true);
                         return;
                     }
                     selectedTags.add(chip.getLabel());
                     chip.setAvatarIcon(getResources().getDrawable(R.mipmap.ic_checkmark));
-//                    chip.setDeletable(false);
                 }
             });
             chipsLayout.addView(view);
-
         }
     }
 
     private void populateExistingTags(FlexboxLayout layout) {
-        for (int i = 0; i < 10; i++) {
-//            View view = layoutInflater.inflate(R.layout.scroll_view_item, linearLayout, false);
-            final ChipView chip = new ChipView(this);
-            chip.setLabel("Pritesh");
-            chip.setPadding(2,2,2,2);
+        Iterator iterator = availableTags.iterator();
+        while (iterator.hasNext()){
+            ChipView chip = createChip(iterator.next().toString());
             layout.addView(chip);
-
         }
+    }
+
+    private ChipView createChip(String tag){
+        final ChipView chip = new ChipView(this);
+        chip.setLabel(tag);
+        chip.setChipBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        chip.setLabelColor(getResources().getColor(R.color.white));
+        chip.setDeleteIconColor(getResources().getColor(R.color.white));;
+        chip.setPadding(2,2,2,2);
+        chip.setDeletable(true);
+        chip.setOnDeleteClicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                availableTags.remove(chip.getLabel());
+                chip.setVisibility(View.GONE);
+            }
+        });
+        return chip;
     }
 }

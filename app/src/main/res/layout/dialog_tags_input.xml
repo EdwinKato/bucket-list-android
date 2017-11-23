@@ -22,7 +22,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
-                android:background="@mipmap/ic_checkmark"
+                android:background="@mipmap/ic_add"
                 app:layout_constraintEnd_toEndOf="parent" />
 
 
@@ -41,12 +41,15 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:layout_marginTop="5dp"
         app:cardElevation="3dp"
+        android:padding="10dp"
         app:cardBackgroundColor="#fff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ScrollView
+            android:layout_marginTop="5dp"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -57,6 +60,7 @@
             <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:showDividerHorizontal="middle"
                 app:flexWrap="wrap"
                 app:alignItems="stretch"
                 app:alignContent="stretch"
