@@ -192,12 +192,11 @@
                         android:layout_gravity="center_vertical"
                         android:id="@+id/horizontal_scroll_view"
                         android:scrollbars="horizontal">
+
                         <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/chips_layout"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content">
 
                             <Button
                                 android:id="@+id/action_add_tag"
@@ -206,7 +205,17 @@
                                 android:layout_width="40dp"
                                 android:layout_height="40dp" />
 
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/chips_layout"
+                                android:layout_gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                            </LinearLayout>
+
                         </LinearLayout>
+
                     </HorizontalScrollView>
 
                 </android.support.v7.widget.CardView>

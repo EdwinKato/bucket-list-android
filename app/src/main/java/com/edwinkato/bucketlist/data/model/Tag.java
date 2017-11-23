@@ -12,24 +12,9 @@ public class Tag {
 
     public Tag() {}
 
-    public Tag(String nName, String mUid, int bucketListCount) {
+    public Tag(String nName, String mUid) {
         this.nName = nName;
         this.mUid = mUid;
-        this.bucketListCount = bucketListCount;
-    }
-
-    public int getBucketListCount() {
-        return bucketListCount;
-    }
-
-    public void setBucketListCount(int bucketListCount) {
-        this.bucketListCount = bucketListCount;
-    }
-
-    int bucketListCount;
-
-    public Tag(String nName) {
-        this.nName = nName;
     }
 
     public String getName() {
@@ -46,5 +31,13 @@ public class Tag {
 
     public void setID(String uid) {
         this.mUid = uid;
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "nName='" + nName + '\'' +
+                ", mUid='" + mUid + '\'' +
+                '}';
     }
 }
