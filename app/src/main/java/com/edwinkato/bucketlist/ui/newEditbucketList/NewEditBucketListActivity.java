@@ -153,20 +153,18 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
         populateExistingTags(tagsDisplayLayout);
         final EditText tagText = (EditText)dialog.findViewById(R.id.tag_text);
 
-        addTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String text = tagText.getText().toString().trim();
-                if (!text.equals("")) {
-                    availableTags.add(text);
-                    ChipView chip = createChip(text);
-                    ChipView inActivityChip = createChip(text);
-                    tagsDisplayLayout.addView(chip);
-                    chipsLayout.addView(inActivityChip);
-                    tagText.setText("");
-                }
+        addTag.setOnClickListener((view) -> {
+            String text = tagText.getText().toString().trim();
+            if (!text.equals("")) {
+                availableTags.add(text);
+                ChipView chip = createChip(text);
+                ChipView inActivityChip = createChip(text);
+                tagsDisplayLayout.addView(chip);
+                chipsLayout.addView(inActivityChip);
+                tagText.setText("");
             }
         });
+
     }
 
     private void save() {
@@ -225,25 +223,20 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
         Iterator iterator = availableTags.iterator();
         while (iterator.hasNext()){
             View view = layoutInflater.inflate(R.layout.scroll_view_item, linearLayout, false);
-            final ChipView chip = (ChipView) view.findViewById(R.id.chip);
+            ChipView chip = view.findViewById(R.id.chip);
             chip.setLabel(iterator.next().toString());
-            chip.setOnDeleteClicked(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar snackbar = Snackbar
-                            .make(linearLayout, chip.getLabel() + ": delete clicked", Snackbar.LENGTH_LONG);
-                    snackbar.show();
-                }
+
+            chip.setOnDeleteClicked((deleteView) -> {
+                Snackbar snackbar = Snackbar
+                        .make(linearLayout, chip.getLabel() + ": delete clicked", Snackbar.LENGTH_LONG);
+                snackbar.show();
             });
 
-            chip.setOnChipClicked(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (selectedTags.contains(chip.getLabel())) {
-                        selectedTags.remove(chip.getLabel());
-                        chip.setHasAvatarIcon(false);
-                        return;
-                    }
+            chip.setOnChipClicked((clickView) -> {
+                if (selectedTags.contains(chip.getLabel())) {
+                    selectedTags.remove(chip.getLabel());
+                    chip.setHasAvatarIcon(false);
+                } else{
                     selectedTags.add(chip.getLabel());
                     chip.setAvatarIcon(getResources().getDrawable(R.mipmap.ic_checkmark));
                 }
@@ -261,19 +254,16 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
     }
 
     private ChipView createChip(String tag){
-        final ChipView chip = new ChipView(this);
+        ChipView chip = new ChipView(this);
         chip.setLabel(tag);
         chip.setChipBackgroundColor(getResources().getColor(R.color.colorPrimary));
         chip.setLabelColor(getResources().getColor(R.color.white));
         chip.setDeleteIconColor(getResources().getColor(R.color.white));;
         chip.setPadding(2,2,2,2);
         chip.setDeletable(true);
-        chip.setOnDeleteClicked(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                availableTags.remove(chip.getLabel());
-                chip.setVisibility(View.GONE);
-            }
+        chip.setOnDeleteClicked((view) -> {
+            availableTags.remove(chip.getLabel());
+            chip.setVisibility(View.GONE);
         });
         return chip;
     }
