@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.edwinkato.bucketlist.R;
 import com.edwinkato.bucketlist.data.model.BucketList;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +27,7 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.pchmn.materialchips.ChipView;
+import com.pchmn.materialchips.ChipsInput;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,6 +36,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.pchmn.materialchips.R2.id.info;
+import static com.pchmn.materialchips.R2.id.label;
 
 public class NewEditBucketListActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -45,6 +50,8 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
     private String[] arraySpinner = new String[] { "Pending"};
     LayoutInflater layoutInflater;
     HashSet<String> selectedTags = new HashSet<>();
+    HashSet<String> availableTags = new HashSet<>();
+    private MaterialDialog dialog;
 
     @BindView(R.id.action_cancel)
     ImageView actionCancel;
@@ -75,6 +82,10 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
 
     @BindView(R.id.chips_layout)
     LinearLayout chipsLayout;
+
+    @BindView(R.id.action_add_tag)
+    Button addTagButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +142,28 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
             return;
         }
         finish();
+    }
+
+    @OnClick(R.id.action_add_tag)
+    public void addTag(){
+        dialog = new MaterialDialog.Builder(this)
+                .customView(R.layout.dialog_tags_input, true)
+//                .positiveText("Done")
+                .show();
+
+//        final ChipsInput chipsInput = (ChipsInput) dialog.findViewById(R.id.chips_input);
+
+        Button addTag = (Button)dialog.findViewById(R.id.add_tag);
+        LinearLayout tagsDisplayLayout = (LinearLayout)dialog.findViewById(R.id.tags_display_linear_layout);
+        populateExistingTags(tagsDisplayLayout);
+        EditText tagText = (EditText)dialog.findViewById(R.id.tag_text);
+
+        addTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                chipsInput.addChip("sample", "info");
+            }
+        });
     }
 
     private void save() {
@@ -214,6 +247,17 @@ public class NewEditBucketListActivity extends AppCompatActivity implements Vali
                 }
             });
             chipsLayout.addView(view);
+
+        }
+    }
+
+    private void populateExistingTags(LinearLayout layout) {
+        for (int i = 0; i < 10; i++) {
+//            View view = layoutInflater.inflate(R.layout.scroll_view_item, linearLayout, false);
+            final ChipView chip = new ChipView(this);
+            chip.setLabel("Pritesh");
+            chip.setPadding(2,2,2,2);
+            layout.addView(chip);
 
         }
     }

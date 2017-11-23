@@ -199,6 +199,13 @@
                             android:layout_gravity="center_vertical"
                             android:orientation="horizontal">
 
+                            <Button
+                                android:id="@+id/action_add_tag"
+                                android:background="@mipmap/ic_add"
+                                android:layout_marginRight="15dp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp" />
+
                         </LinearLayout>
                     </HorizontalScrollView>
 
